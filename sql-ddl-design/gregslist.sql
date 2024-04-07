@@ -19,9 +19,13 @@ CREATE DATABASE gregslist;
 
 \c gregslist;
 
+--DDL for creating tables:
 CREATE TABLE regions (
   id SERIAL PRIMARY KEY,
-  name TEXT NOT NULL
+  name TEXT NOT NULL,
+  description TEXT, -- Description of the region
+  population INT, -- Population of the region
+  area DECIMAL(10, 2) -- Area of the region in square kilometers or miles
 );
 
 CREATE TABLE users (
@@ -71,6 +75,32 @@ CREATE TABLE post_categories (
   assigned_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- Automatically set to the current date and time when the row is created
   PRIMARY KEY(post_id, category_id)
 );
+
+-- Insert into regions
+INSERT INTO regions (name, description, population, area) VALUES
+('San Francisco', 'The cultural, commercial, and financial center of Northern California.', 883305, 121.4),
+('Atlanta', 'The capital and most populous city of the U.S. state of Georgia.', 498044, 347.1),
+('Seattle', 'The largest city in both the state of Washington and the Pacific Northwest region of North America.', 744955, 369.2);
+
+-- Insert into users
+INSERT INTO users (name, email, password, username, phone_number, address, bio, preferred_region_id) VALUES
+('John Doe', 'john.doe@example.com', 'hashedpassword', 'johndoe', '1234567890', '123 Main St, San Francisco, CA', 'Hello, I am John Doe.', 1),
+('Jane Smith', 'jane.smith@example.com', 'hashedpassword', 'janesmith', '0987654321', '456 Broadway, Atlanta, GA', 'Hello, I am Jane Smith.', 2);
+
+-- Insert into posts
+INSERT INTO posts (title, text, user_id, location, region_id, price, image_url, contact_info) VALUES
+('Selling my old laptop', 'It is in good condition.', 1, 'San Francisco', 1, 500.00, 'http://example.com/images/laptop.jpg', 'john.doe@example.com'),
+('Looking for a roommate', '2B2B apartment in downtown.', 2, 'Atlanta', 2, NULL, NULL, 'jane.smith@example.com');
+
+-- Insert into categories
+INSERT INTO categories (name, description) VALUES
+('For Sale', 'Items for sale by owner or retailer.'),
+('Housing', 'Housing, real estate, and apartments');
+
+-- Insert into post_categories
+INSERT INTO post_categories (post_id, category_id) VALUES
+(1, 1),
+(2, 2);
 
 --SQL syntax notes: 
 -- Identifiers: These are the names of tables, columns, databases, etc. In your example, doctors, id, name, and specialty are identifiers.
